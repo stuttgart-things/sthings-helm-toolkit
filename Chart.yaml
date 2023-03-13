@@ -1,0 +1,12 @@
+---
+apiVersion: v2
+name: sthings-helm-toolkit
+description: A Helm utility library chart for Kubernetes
+type: library
+version: 2.4.7
+appVersion: "2.4.7"
+
+maintainers:
+  - name: Patrick Hermann
+    email: patrick.hermann@sva.de
+deprecated: false
