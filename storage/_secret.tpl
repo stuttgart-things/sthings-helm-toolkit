@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $secretName, $secretTpl := .Values.secrets -}}
-{{ include "sthings-k8s-toolkit.secret" (list $envVar $secretName $secretTpl) }}
+{{ include "sthings-helm-toolkit.secret" (list $envVar $secretName $secretTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.secret" -}}
+{{- define "sthings-helm-toolkit.secret" -}}
 {{- $envVar := first . -}}
 {{- $secretName := index . 1 -}}
 {{- $secret := index . 2 -}}
@@ -24,7 +24,7 @@ metadata:
 {{- if $secret.labels }}
   labels:
     {{- toYaml $secret.labels | nindent 4  }}{{- end }}
-type: {{ $secret.type | default "Opaque" }} 
+type: {{ $secret.type | default "Opaque" }}
 {{ $secret.dataType | default "stringData" }}:
 {{- range $k, $v := $secret.secretKVs }}
   {{ $k }}: {{ $v | quote }}{{ end }}
@@ -39,7 +39,7 @@ examples:
         msteams:
           name: msteams
           labels:
-            app: sthings-tekton    
+            app: sthings-tekton
           secretKVs:
             url: <path:apps/data/tekton#ms_teams_webhookurl> # argocd-vault-plugin reference
 */}}

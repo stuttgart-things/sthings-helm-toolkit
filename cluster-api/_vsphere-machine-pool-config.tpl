@@ -1,4 +1,4 @@
-{{- define "sthings-k8s-toolkit.vsphere-machine-pool-config" -}}
+{{- define "sthings-helm-toolkit.vsphere-machine-pool-config" -}}
 {{- $envVar := first . -}}
 {{- $vsphereMachinePoolConfig := index . 1 -}}
 {{- $vsphereMachinePool := index . 2 -}}

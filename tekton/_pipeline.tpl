@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $pipelineName, $pipelineTpl := .Values.pipelines -}}
-{{ include "sthings-k8s-toolkit.pipeline" (list $envVar $pipelineName $pipelineTpl) }}
+{{ include "sthings-helm-toolkit.pipeline" (list $envVar $pipelineName $pipelineTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.pipeline" -}}
+{{- define "sthings-helm-toolkit.pipeline" -}}
 {{- $envVar := first . -}}
 {{- $pipelineName := index . 1 -}}
 {{- $pipeline := index . 2 -}}
@@ -20,7 +20,7 @@ metadata:
   annotations:
   {{- range $key, $value := $pipeline.annotations }}
     {{ $key }}: {{ $value | quote }}
-{{- end }}{{- end }}    
+{{- end }}{{- end }}
 spec:
   {{- if $pipeline.workspaces }}
   workspaces:
@@ -70,14 +70,14 @@ spec:
         {{- if $ve.value }}
           value: {{ $ve.value }}{{ else }}
           value: ""{{- end }}{{- end }}
-        {{- end }}{{- end }} 
+        {{- end }}{{- end }}
       {{- if $t.when }}
       when:
       {{- range $ke, $ve := $t.when }}
         - input: {{ $ke }}
           operator: {{ $ve.operator }}
           values: ["{{ $ve.values }}"]{{- end }}
-      {{- end }}       
+      {{- end }}
   {{- end }}
   {{- if $pipeline.finally }}
   finally:
@@ -98,7 +98,7 @@ spec:
         - input: {{ $ke }}
           operator: {{ $ve.operator }}
           values: ["{{ $ve.values }}"]{{- end }}
-  {{- end }}       
+  {{- end }}
   {{- end }}
   {{- end }}
 {{- end }}
@@ -109,16 +109,16 @@ spec:
 pipelines:
   build-kaniko-image:
     namespace: sthings-tekton
-    workspaces: 
+    workspaces:
       - shared-workspace
       - ssh-credentials
       - dockerconfig
     params:
-      image: 
+      image:
         description: reference of the image to build
-      tag: 
+      tag:
         description: reference of the tag of the image to build
-      registry: 
+      registry:
         description: registry FROM (base image)
       gitRepoUrl:
         description: source git repo
@@ -162,7 +162,7 @@ pipelines:
           DOCKERFILE:
             value: $(params.dockerfile)
           EXTRA_ARGS:
-            values: 
+            values:
               - --skip-tls-verify
       send-webhook-msteams:
         task: send-msteams-webhook
@@ -173,7 +173,7 @@ pipelines:
             value: "image $(params.image):$(params.tag) build & pushed successfully w/ kaniko ($(tasks.kaniko.results.IMAGE_DIGEST))"
           webhook-url-secret:
             value: msteams
-          webhook-url-secret-key: 
+          webhook-url-secret-key:
             value: url
     finally:
       notify-any-failure:

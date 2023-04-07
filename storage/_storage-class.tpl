@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $storageClassName, $storageClassTpl := .Values.scs -}}
-{{ include "sthings-k8s-toolkit.storageClass" (list $envVar $storageClassName $storageClassTpl) }}
+{{ include "sthings-helm-toolkit.storageClass" (list $envVar $storageClassName $storageClassTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.storageclass" -}}
+{{- define "sthings-helm-toolkit.storageclass" -}}
 {{- $envVar := first . -}}
 {{- $storageclassName := index . 1 -}}
 {{- $storageclass := index . 2 -}}
@@ -37,7 +37,7 @@ examples:
           annotations:
             storageclass.beta.kubernetes.io/is-default-class: "true"
             storageclass.kubernetes.io/is-default-class: "true"
-          provisioner: netapp.io/trident 
+          provisioner: netapp.io/trident
           parameters:
           backendType: ontap-nas
 */}}

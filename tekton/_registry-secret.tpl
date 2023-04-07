@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $registrySecretName, $registrySecretSecretTpl := .Values.registryCredentials -}}
-{{ include "sthings-k8s-toolkit.registrySecret" (list $envVar $registrySecretName $registrySecretSecretTpl) }}
+{{ include "sthings-helm-toolkit.registrySecret" (list $envVar $registrySecretName $registrySecretSecretTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.registrySecret" -}}
+{{- define "sthings-helm-toolkit.registrySecret" -}}
 {{- $envVar := first . -}}
 {{- $registrySecretName := index . 1 -}}
 {{- $registrySecret := index . 2 -}}
@@ -23,12 +23,12 @@ metadata:
   annotations:
   {{- range $key, $value := $registrySecret.annotations }}
     {{ $key }}: {{ $value | quote }}
-{{- end }}{{- end }}  
+{{- end }}{{- end }}
 data:
 {{- if $registrySecret.dockerConfigJson }}
   config.json: {{ $registrySecret.dockerConfigJson }}
 {{ else }}
-  config.json: {{ include "sthings-k8s-toolkit.dockerConfigJson" (list $registryUrl $registryUser $registryPassword) }}
+  config.json: {{ include "sthings-helm-toolkit.dockerConfigJson" (list $registryUrl $registryUser $registryPassword) }}
 {{- end }}
 {{- end }}
 
@@ -37,13 +37,13 @@ data:
 registryCredentials:
   scr-labda:
     registry: scr.tiab.labda.sva.de
-    namespace: tekton-cicd    
+    namespace: tekton-cicd
     dockerConfigJson: <path:harbor/data/scr#dockerConfigJson> # argocd lookup or just a b64 string
   scr-labul:
     namespace: tekton-cicd
     labels:
       app: sthings-tekton
-    registry: scr.labul.sva.de 
+    registry: scr.labul.sva.de
     username: sthings # or username
     password: secret # + pw instead of dockerConfigJson variable
 */}}

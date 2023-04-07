@@ -1,4 +1,4 @@
-{{- define "sthings-k8s-toolkit.rancher-cluster-config" -}}
+{{- define "sthings-helm-toolkit.rancher-cluster-config" -}}
 {{- $envVar := first . -}}
 {{- $rancherClusterConfig := index . 1 -}}
 {{- $rancherCluster := index . 2 -}}

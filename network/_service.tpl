@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $service, $serviceDefinition := .Values.services -}}
-{{ include "sthings-k8s-toolkit.service" (list $envVar $service $serviceDefinition) }}
+{{ include "sthings-helm-toolkit.service" (list $envVar $service $serviceDefinition) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.service" -}}
+{{- define "sthings-helm-toolkit.service" -}}
 {{- $envVar := first . -}}
 {{- $object := index . 1 -}}
 {{- $objectDefinition := index . 2 -}}
@@ -61,7 +61,7 @@ examples:
                   type: ClusterIP
                   port: 80
           selectorLabels:
-            app: sthings-slides            
+            app: sthings-slides
 */}}
 
 {{/*

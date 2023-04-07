@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $networkPolicyName, $networkPolicyTpl := .Values.networkPolicys -}}
-{{ include "sthings-k8s-toolkit.network-policy" (list $envVar $networkPolicyName $networkPolicyTpl) }}
+{{ include "sthings-helm-toolkit.network-policy" (list $envVar $networkPolicyName $networkPolicyTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.network-policy" -}}
+{{- define "sthings-helm-toolkit.network-policy" -}}
 {{- $envVar := first . -}}
 {{- $networkPolicyName := index . 1 -}}
 {{- $networkPolicy := index . 2 -}}

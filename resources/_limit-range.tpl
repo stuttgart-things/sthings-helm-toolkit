@@ -1,4 +1,4 @@
-{{- define "sthings-k8s-toolkit.limit-range" -}}
+{{- define "sthings-helm-toolkit.limit-range" -}}
 {{- $envVar := first . -}}
 {{- $secretName := index . 1 -}}
 {{- $secret := index . 2 -}}
@@ -19,4 +19,3 @@ spec:
       memory: {{ .Values.limits.defaultRequest.memory | default "256Mi"}}
     type: {{ .Values.limits.type | default "Container" }}
 {{- end }}
-

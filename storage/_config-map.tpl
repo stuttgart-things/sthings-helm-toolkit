@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $configmapName, $configmapTpl := .Values.configmaps -}}
-{{ include "sthings-k8s-toolkit.configmap" (list $envVar $configmapName $configmapTpl) }}
+{{ include "sthings-helm-toolkit.configmap" (list $envVar $configmapName $configmapTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.configmap" -}}
+{{- define "sthings-helm-toolkit.configmap" -}}
 {{- $envVar := first . -}}
 {{- $configmapName := index . 1 -}}
 {{- $configmapTpl := index . 2 -}}

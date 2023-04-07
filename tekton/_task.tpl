@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $taskName, $taskTpl := .Values.tasks -}}
-{{ include "sthings-k8s-toolkit.task" (list $envVar $taskName $taskTpl) }}
+{{ include "sthings-helm-toolkit.task" (list $envVar $taskName $taskTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.task" -}}
+{{- define "sthings-helm-toolkit.task" -}}
 {{- $envVar := first . -}}
 {{- $taskName := index . 1 -}}
 {{- $task := index . 2 -}}
@@ -15,7 +15,7 @@ apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
   name: {{ $taskName }}
-  namespace: {{ $task.namespace | default $envVar.Values.defaultNamespace }}   
+  namespace: {{ $task.namespace | default $envVar.Values.defaultNamespace }}
   labels:
     {{- toYaml $task.labels | nindent 4 }}
   {{- if $task.annotations }}
@@ -65,8 +65,8 @@ spec:
       {{- if $v.args }}
       args:
       {{- range $v.args }}
-        - {{ . }} 
-      {{- end }}{{- end }}   
+        - {{ . }}
+      {{- end }}{{- end }}
       image: {{ $v.image | quote }}
       {{- if $v.env  }}
       env:
@@ -77,7 +77,7 @@ spec:
         {{- if $ve.valueFrom }}
           valueFrom:{{ $ve.valueFrom | toYaml | nindent 12 }}{{- end }}
         {{- end }}
-      {{- end }} 
+      {{- end }}
       {{- if $v.securityContext }}
       securityContext:
         runAsNonRoot: {{ $v.securityContext.runAsNonRoot }}
@@ -86,7 +86,7 @@ spec:
       {{- if $v.script }}
       script: {{- $v.script | toYaml | indent 6 | replace "     |" "|" }}
       {{- end }}
-  {{- end }} 
+  {{- end }}
 {{- end }}
 
 {{/*
@@ -118,13 +118,13 @@ tasks:
       IMAGE_URL:
         description: url of the image just built.
     params:
-      IMAGE: 
+      IMAGE:
         description: name (reference) of the image to build
-      TAG: 
+      TAG:
         description: name (reference) of the image to build
-      REGISTRY: 
-        description: registry FROM (base image) 
-        default: scr.tiab.labda.sva.de   
+      REGISTRY:
+        description: registry FROM (base image)
+        default: scr.tiab.labda.sva.de
       DOCKERFILE:
         description: Path to the Dockerfile to build
         default: ./Dockerfile
@@ -149,7 +149,7 @@ tasks:
           - --context=$(workspaces.source.path)/$(params.CONTEXT) # The user does not need to care the workspace and the source.
           - --destination=$(params.IMAGE):$(params.TAG)
           - --destination=$(params.IMAGE):latest
-          - --build-arg=REGISTRY=$(params.REGISTRY)  
+          - --build-arg=REGISTRY=$(params.REGISTRY)
           - --digest-file=$(results.IMAGE_DIGEST.path)
       write-url:
         image: docker.io/library/bash:5.1.4@sha256:b208215a4655538be652b2769d82e576bc4d0a2bb132144c060efc5be8c3f5d6

@@ -1,4 +1,4 @@
-{{- define "sthings-k8s-toolkit.resource-quota" -}}
+{{- define "sthings-helm-toolkit.resource-quota" -}}
 {{- $envVar := first . -}}
 {{- $secretName := index . 1 -}}
 {{- $secret := index . 2 -}}

@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $pvcName, $pvcTpl := .Values.pvcs -}}
-{{ include "sthings-k8s-toolkit.pvc" (list $envVar $pvcName $pvcTpl) }}
+{{ include "sthings-helm-toolkit.pvc" (list $envVar $pvcName $pvcTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.pvc" -}}
+{{- define "sthings-helm-toolkit.pvc" -}}
 {{- $envVar := first . -}}
 {{- $pvcName := index . 1 -}}
 {{- $pvcTpl := index . 2 -}}

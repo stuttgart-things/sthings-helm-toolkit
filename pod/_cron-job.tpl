@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $cronJobName, $cronJob := .Values.cronJobs -}}
-{{ include "sthings-k8s-toolkit.cron-job" (list $envVar $cronJobName $cronJob) }}
+{{ include "sthings-helm-toolkit.cron-job" (list $envVar $cronJobName $cronJob) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.cron-job" -}}
+{{- define "sthings-helm-toolkit.cron-job" -}}
 {{- $envVar := first . -}}
 {{- $cronJobName := index . 1 -}}
 {{- $cronJob := index . 2 -}}
@@ -30,13 +30,13 @@ spec:
               image: {{ $cronJob.container.image }}
               command:
               {{- range $cronJob.container.command }}
-                - {{ . }} 
+                - {{ . }}
               {{- end }}
               {{- if $cronJob.container.env }}
               env:
               {{- range $cronJob.container.env }}
                 - name: {{ .name }}
-                  value: {{ .value | quote }} 
+                  value: {{ .value | quote }}
               {{- end }}{{- end }}
 {{- end }}
 

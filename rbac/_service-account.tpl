@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $serviceAccountName, $serviceAccount := .Values.serviceAccounts -}}
-{{ include "sthings-k8s-toolkit.service-account" (list $envVar $serviceAccountName $serviceAccount) }}
+{{ include "sthings-helm-toolkit.service-account" (list $envVar $serviceAccountName $serviceAccount) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.service-account" -}}
+{{- define "sthings-helm-toolkit.service-account" -}}
 {{- $envVar := first . -}}
 {{- $serviceAccountName := index . 1 -}}
 {{- $serviceAccount := index . 2 -}}

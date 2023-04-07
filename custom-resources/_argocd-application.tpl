@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $applicationName, $applicationTpl := .Values.applications -}}
-{{ include "sthings-k8s-toolkit.argocd-application" (list $envVar $applicationName $applicationTpl) }}
+{{ include "sthings-helm-toolkit.argocd-application" (list $envVar $applicationName $applicationTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.argocd-application" -}}
+{{- define "sthings-helm-toolkit.argocd-application" -}}
 {{- $envVar := first . -}}
 {{- $applicationName := index . 1 -}}
 {{- $application := index . 2 -}}
@@ -30,7 +30,7 @@ metadata:
     argocd.argoproj.io/instance: {{ $applicationName }}{{ end }}
 spec:
   project: {{ $application.project | default "default" }}
-  destination: 
+  destination:
     name: ''
     namespace: {{ $application.destination.namespace }}
     server: {{ $application.destination.server }}
@@ -42,7 +42,7 @@ spec:
     {{- end }}
     {{- if $application.source.path }}
     path: {{ $application.source.path }}
-    {{- end }}    
+    {{- end }}
     {{- if $application.source.kind }}
     {{- toYaml $application.source.kind | nindent 4 }}
     {{- end }}
@@ -69,7 +69,7 @@ spec:
 examples:
   - name: helm-nginx-long
     values: |
-      applications:  
+      applications:
         nginx:
           metadata:
             name: webserver
@@ -85,10 +85,10 @@ examples:
           source:
             kind:
               helm:
-                releaseName: my-webserver 
+                releaseName: my-webserver
                 parameters:
                   - name: service.type
-                    value: NodePort   
+                    value: NodePort
             chart: nginx
             repoURL: https://charts.bitnami.com/bitnami
             targetRevision: 13.2.12
@@ -101,7 +101,7 @@ examples:
                 - CreateNamespace=true
   - name: helm-nginx-short
     values: |
-      applications:  
+      applications:
         nginx:
           metadata:
             namespace: argo-cd
@@ -112,16 +112,16 @@ examples:
           source:
             kind:
               helm:
-                releaseName: my-webserver 
+                releaseName: my-webserver
                 parameters:
                   - name: service.type
-                    value: NodePort   
+                    value: NodePort
             chart: nginx
             repoURL: https://charts.bitnami.com/bitnami
             targetRevision: 13.2.12
   - name: git-manifests-path
     values: |
-      applications:  
+      applications:
         sthings-custom-resources:
           metadata:
             name: sthings-custom-resources
@@ -147,7 +147,7 @@ examples:
                 - CreateNamespace=true
   - name: git-manifests-path
     values: |
-      applications:  
+      applications:
         sthings-cluster:
           metadata:
             name: sthings-cluster

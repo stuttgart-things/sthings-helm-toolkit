@@ -1,4 +1,4 @@
-{{- define "sthings-k8s-toolkit.imagePullSecret" -}}
+{{- define "sthings-helm-toolkit.imagePullSecret" -}}
 {{- $envVar := first . -}}
 {{- $imagePullSecretName := index . 1 -}}
 {{- $imagePullSecret := index . 2 -}}
@@ -12,5 +12,5 @@ metadata:
   namespace: {{ $imagePullSecret.namespace | default $envVar.Values.namespace }}
 type: kubernetes.io/dockerconfigjson
 data:
-  .dockerconfigjson: {{ include "sthings-k8s-toolkit.dockerConfigJson" (list $registryUrl $registryUser $registryPassword) }}
+  .dockerconfigjson: {{ include "sthings-helm-toolkit.dockerConfigJson" (list $registryUrl $registryUser $registryPassword) }}
 {{- end }}

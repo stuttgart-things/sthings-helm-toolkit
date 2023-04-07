@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $secretName, $secretTpl := .Values.gitSecretsBasicAuth -}}
-{{ include "sthings-k8s-toolkit.gitBasicAuthSecret" (list $envVar $secretName $secretTpl) }}
+{{ include "sthings-helm-toolkit.gitBasicAuthSecret" (list $envVar $secretName $secretTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.gitBasicAuthSecret" -}}
+{{- define "sthings-helm-toolkit.gitBasicAuthSecret" -}}
 {{- $envVar := first . -}}
 {{- $gitBasicAuthSecretName := index . 1 -}}
 {{- $gitBasicAuthSecret := index . 2 -}}
@@ -39,9 +39,9 @@ stringData:
 gitSecretsBasicAuth:
   codehub-basicauth:
     # annotations:
-    #   argocd.argoproj.io/sync-wave: "0" 
+    #   argocd.argoproj.io/sync-wave: "0"
     labels:
-      app: sthings-tekton   
+      app: sthings-tekton
     namespace: tekton-cicd
     hostname: codehub.sva.de
     username: <path:git/data/codehub#git_token_username>

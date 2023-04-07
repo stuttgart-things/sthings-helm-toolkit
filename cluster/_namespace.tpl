@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $namespaceName, $namespaceTpl := .Values.namespaces -}}
-{{ include "sthings-k8s-toolkit.namespace" (list $envVar $namespaceName $namespaceTpl) }}
+{{ include "sthings-helm-toolkit.namespace" (list $envVar $namespaceName $namespaceTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.namespace" -}}
+{{- define "sthings-helm-toolkit.namespace" -}}
 {{- $envVar := first . -}}
 {{- $namespaceName := index . 1 -}}
 {{- $namespace := index . 2 -}}
@@ -34,7 +34,7 @@ examples:
         sthings-base:
           name: sthings-base:
           labels:
-            app: sthings-base 
+            app: sthings-base
           #annotations:
             #field.cattle.io/projectId: c-m-4hrvdmsk:p-wcb6d
 */}}

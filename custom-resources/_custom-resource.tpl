@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $customResourceName, $customResourceTpl := .Values.customresources -}}
-{{ include "sthings-k8s-toolkit.customResource" (list $envVar $customResourceName $customResourceTpl) }}
+{{ include "sthings-helm-toolkit.customResource" (list $envVar $customResourceName $customResourceTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.customResource" -}}
+{{- define "sthings-helm-toolkit.customResource" -}}
 {{- $envVar := first . -}}
 {{- $customResourceName := index . 1 -}}
 {{- $customResource := index . 2 -}}
@@ -17,7 +17,7 @@ metadata:
   name: {{ $customResource.metadata.name }}
   namespace: {{ $customResource.metadata.namespace | default $envVar.Values.defaultNamespace }}
   labels:
-    {{- toYaml $customResource.metadata.labels | nindent 4 }}  
+    {{- toYaml $customResource.metadata.labels | nindent 4 }}
 spec:
   {{- toYaml $customResource.spec| nindent 2 }}
 {{- end }}

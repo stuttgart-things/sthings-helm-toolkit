@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $clusterRoleName, $clusterRole := .Values.clusterRoles -}}
-{{ include "sthings-k8s-toolkit.cluster-role" (list $envVar $clusterRoleName $clusterRole) }}
+{{ include "sthings-helm-toolkit.cluster-role" (list $envVar $clusterRoleName $clusterRole) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.cluster-role" -}}
+{{- define "sthings-helm-toolkit.cluster-role" -}}
 {{- $envVar := first . -}}
 {{- $clusterRoleName := index . 1 -}}
 {{- $clusterRole := index . 2 -}}
@@ -112,7 +112,7 @@ clusterRoles:
         - list
         - patch
         - update
-        - watch        
+        - watch
 */}}
 
 {{/*

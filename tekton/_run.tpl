@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $runName, $runTpl := .Values.runs -}}
-{{ include "sthings-k8s-toolkit.run" (list $envVar $runName $runTpl) }}
+{{ include "sthings-helm-toolkit.run" (list $envVar $runName $runTpl) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.run" -}}
+{{- define "sthings-helm-toolkit.run" -}}
 {{- $envVar := first . -}}
 {{- $runName := index . 1 -}}
 {{- $run := index . 2 -}}
@@ -21,7 +21,7 @@ metadata:
   {{- range $key, $value := $run.annotations }}
     {{ $key }}: {{ $value | quote }}
 {{- end }}{{- end }}
-spec:  
+spec:
   {{ $run.kind | replace "Run" "" | lower | default "pipeline" }}Ref:
     name: {{ $run.ref }}
   workspaces:
@@ -29,7 +29,7 @@ spec:
     - name: {{ $k }}
     {{- if eq $v.workspaceKind "emptyDir" }}
       emptyDir: {}{{ else }}
-      {{ $v.workspaceKind }}: 
+      {{ $v.workspaceKind }}:
         {{ $v.workspaceKind | replace "persistentVolumeClaim" "claim" }}Name: {{ $v.workspaceRef }}{{ end }}{{ end }}
   params:
   {{- range $k, $v := $run.params }}
@@ -41,7 +41,7 @@ spec:
     - name: {{ $k }}
       value:
       {{- range $v }}
-        - {{ . | quote }} 
+        - {{ . | quote }}
       {{- end }}
   {{ end }}
   {{ end }}
@@ -50,7 +50,7 @@ spec:
 {{/*
 # exampleValues:
 # taskRun
-runs:  
+runs:
   sendToMicrosoftTeams:
     name: send-to-microsoft-teams
     namespace: sthings-tekton

@@ -1,24 +1,24 @@
 {{/*
 # includeStatement
 {{- $envVar := . -}}
-{{ include "sthings-k8s-toolkit.deployment" (list $envVar) }}
+{{ include "sthings-helm-toolkit.deployment" (list $envVar) }}
 */}}
 
-{{- define "sthings-k8s-toolkit.deployment" -}}
+{{- define "sthings-helm-toolkit.deployment" -}}
 {{- $envVar := first . -}}
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $envVar.Values.deployment.name | default (include "sthings-k8s-toolkit.fullname" . )}}
-  namespace: {{ $envVar.Values.deployment.namespace | default $envVar.Values.namespace }}  
+  name: {{ $envVar.Values.deployment.name | default (include "sthings-helm-toolkit.fullname" . )}}
+  namespace: {{ $envVar.Values.deployment.namespace | default $envVar.Values.namespace }}
   labels:
     {{- toYaml $envVar.Values.deployment.labels | nindent 4 }}
   {{- if $envVar.Values.deployment.annotations }}
   annotations:
   {{- range $key, $value := $envVar.Values.deployment.annotations }}
     {{ $key }}: {{ $value | quote }}
-  {{- end }}{{- end }} 
+  {{- end }}{{- end }}
 spec:
   selector:
     matchLabels:
@@ -29,7 +29,7 @@ spec:
   annotations:
   {{- range $key, $value := $envVar.Values.deployment.annotations }}
     {{ $key }}: {{ $value | quote }}
-  {{- end }}{{- end }} 
+  {{- end }}{{- end }}
   template:
     metadata:
       {{- with $envVar.Values.deployment.podAnnotations }}
@@ -60,10 +60,10 @@ spec:
         - name: {{ $k }}
         {{- if eq $v.volumeKind "emptyDir" }}
           emptyDir: {}{{ else }}
-          {{ $v.volumeKind }}: 
-            {{ $v.volumeKind }}Name: {{ $v.volumeRef }}{{ end }}{{ end }}{{ end }}          
+          {{ $v.volumeKind }}:
+            {{ $v.volumeKind }}Name: {{ $v.volumeRef }}{{ end }}{{ end }}{{ end }}
   {{- if $envVar.Values.deployment.initContainer }}
-      initContainers: 
+      initContainers:
       - name: {{ $envVar.Values.deployment.initContainer.name }}
         image: {{ $envVar.Values.deployment.initContainer.image }}:{{ $envVar.Values.deployment.initContainer.initTag | default "latest" }}
         imagePullPolicy: {{ $envVar.Values.deployment.initContainerimagePullPolicy | default "Always" }}
@@ -92,9 +92,9 @@ spec:
           {{- end }}
         {{- end }}
         {{- if $envVar.Values.deployment.initContainer.command }}
-        command: 
+        command:
         {{- range $envVar.Values.deployment.initContainer.command }}
-          - {{ . }} 
+          - {{ . }}
         {{- end }}{{- end }}
         {{- if $envVar.Values.deployment.initContainer.volumeMounts }}
         volumeMounts:
@@ -102,7 +102,7 @@ spec:
           - name: {{ $k }}
             mountPath: {{ $v.mountPath }}
         {{- end }}
-        {{- end }}           
+        {{- end }}
   {{- end}}
       {{- if $envVar.Values.deployment.containers }}
       containers:
@@ -156,8 +156,8 @@ spec:
           {{- if $v.args }}
           args:
           {{- range $v.args }}
-            - {{ . }} 
-          {{- end }}{{- end }} 
+            - {{ . }}
+          {{- end }}{{- end }}
           {{- if $v.resources }}
           resources:
             {{- if $v.resources.requests }}
@@ -174,7 +174,7 @@ spec:
           {{- if $v.command }}
           command:
           {{- range $v.command }}
-            - {{ . }} 
+            - {{ . }}
           {{- end }}{{- end }}
           {{- if $v.volumeMounts }}
           volumeMounts:
@@ -223,7 +223,7 @@ spec:
         {{- if $envVar.Values.deployment.commands }}
         command:
         {{- range $envVar.Values.deployment.commands }}
-          - {{ . }} 
+          - {{ . }}
         {{- end }}{{- end }}
         {{- if $envVar.Values.deployment.volumeMounts }}
         volumeMounts:
@@ -231,7 +231,7 @@ spec:
           - name: {{ $k }}
             mountPath: {{ $v.mountPath }}
         {{- end }}
-        {{- end }}   
+        {{- end }}
         resources:
           {{- if $envVar.Values.deployment.resources.requests }}
           requests:
@@ -256,25 +256,25 @@ examples:
         labels:
           app: sthings-slides
         selectorLabels:
-          app: sthings-slides  
+          app: sthings-slides
         image: scr.tiab.labda.sva.de/sthings-slides-template/sthings-slides-template
         tag: go-1.19
         replicaCount: 1
-        imagePullPolicy: Always 
+        imagePullPolicy: Always
         ports:
           app-port:
             containerPort: 8080
             protocol: TCP
         volumeMounts:
           workdir:
-            mountPath: /work-dir      
+            mountPath: /work-dir
         allowPrivilegeEscalation: "false"
         privileged: "false"
         runAsNonRoot: "true"
         readOnlyRootFilesystem: "true"
         probes:
           livenessProbe:
-            tcpSocket: 
+            tcpSocket:
               path: /
               port: app-port
           readinessProbe:
@@ -290,7 +290,7 @@ examples:
             memory: 256Mi
         volumes:
           workdir:
-            volumeKind: emptyDir    
+            volumeKind: emptyDir
         initContainer:
           name: download-presentationfiles
           image: scr.labul.sva.de/sthings-tekton-runner/sthings-tekton-runner
@@ -313,7 +313,7 @@ examples:
             imagePullPolicy: Always
             env:
               ANSIBLE_GATHERING:
-                value: explicit      
+                value: explicit
             securityContext:
               allowPrivilegeEscalation: false
               capabilities:
@@ -379,7 +379,7 @@ examples:
           control-plane: controller-manager
         selectorLabels:
           control-plane: controller-manager
-        replicaCount: 1 
+        replicaCount: 1
         terminationGracePeriodSeconds: 60
         serviceAccount: sthings-k8s-operator-controller-manager
         securityContext:

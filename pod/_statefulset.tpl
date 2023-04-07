@@ -1,10 +1,10 @@
 {{/*
 # includeStatement
 {{- $envVar := . -}}
-{{ include "sthings-k8s-toolkit.statefulset" (list $envVar) }}
+{{ include "sthings-helm-toolkit.statefulset" (list $envVar) }}
 */}}
 
-{{- define "sthings-k8s-toolkit.statefulset" -}}
+{{- define "sthings-helm-toolkit.statefulset" -}}
 {{- $envVar := first . -}}
 ---
 apiVersion: apps/v1
@@ -18,7 +18,7 @@ metadata:
   annotations:
   {{- range $key, $value := $envVar.Values.statefulset.annotations }}
     {{ $key }}: {{ $value | quote }}
-  {{- end }}{{- end }} 
+  {{- end }}{{- end }}
 spec:
   replicas: {{ $envVar.Values.statefulset.replicas | default "1" }}
   revisionHistoryLimit: {{ $envVar.Values.statefulset.revisionHistoryLimit | default "1" }}
@@ -92,13 +92,13 @@ spec:
         {{- if $v.command }}
           command:
         {{- range $v.command }}
-            - {{ . }} 
+            - {{ . }}
         {{- end }}{{- end }}
         {{- if $v.args }}
           args:
           {{- range $v.args }}
-            - {{ . }} 
-          {{- end }}{{- end }}          
+            - {{ . }}
+          {{- end }}{{- end }}
         {{- if $v.volumeMounts }}
           volumeMounts:
         {{- range $km, $vm := $v.volumeMounts  }}
@@ -111,14 +111,14 @@ spec:
   - metadata:
       name: {{ $envVar.Values.statefulset.name }}-data
     spec:
-      accessModes: 
+      accessModes:
       {{- if $envVar.Values.statefulset.volumeClaim.annotations }}
       annotations:
       {{- range $key, $value := $envVar.Values.statefulset.volumeClaim.annotations }}
         {{ $key }}: {{ $value | quote }}
-      {{- end }}{{- end }} 
-      {{- range $envVar.Values.statefulset.volumeClaim.accessModes }} 
-        - {{ . | quote }} 
+      {{- end }}{{- end }}
+      {{- range $envVar.Values.statefulset.volumeClaim.accessModes }}
+        - {{ . | quote }}
       {{- end }}
       storageClassName: {{ $envVar.Values.statefulset.volumeClaim.storageClassName }}
       resources:

@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $roleName, $role := .Values.roles -}}
-{{ include "sthings-k8s-toolkit.role" (list $envVar $roleName $role) }}
+{{ include "sthings-helm-toolkit.role" (list $envVar $roleName $role) }}
 {{ end -}}
 */}}
 ---
-{{- define "sthings-k8s-toolkit.role" -}}
+{{- define "sthings-helm-toolkit.role" -}}
 {{- $envVar := first . -}}
 {{- $roleName := index . 1 -}}
 {{- $role := index . 2 -}}

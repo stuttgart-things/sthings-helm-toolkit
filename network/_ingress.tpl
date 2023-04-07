@@ -2,11 +2,11 @@
 # includeStatement
 {{- $envVar := . -}}
 {{- range $ingress, $ingressDefinition := .Values.ingress -}}
-{{ include "sthings-k8s-toolkit.ingress" (list $envVar $ingress $ingressDefinition) }}
+{{ include "sthings-helm-toolkit.ingress" (list $envVar $ingress $ingressDefinition) }}
 {{ end -}}
 */}}
 
-{{- define "sthings-k8s-toolkit.ingress" -}}
+{{- define "sthings-helm-toolkit.ingress" -}}
 {{- $envVar := first . -}}
 {{- $ingressName := index . 1 -}}
 {{- $ingress := index . 2 -}}
@@ -20,7 +20,7 @@ metadata:
   annotations:
   {{- range $key, $value := $ingress.annotations }}
     {{ $key }}: {{ $value | quote }}
-  {{- end }}{{- end }} 
+  {{- end }}{{- end }}
   labels:
     {{- toYaml $ingress.labels | nindent 4  }}
 spec:
@@ -48,7 +48,7 @@ spec:
 examples:
   - name: basic-ingress
     values: |
-      ingress: 
+      ingress:
         sthings-slides:
           name: sthings-slides
           namespace: sthings-slides
