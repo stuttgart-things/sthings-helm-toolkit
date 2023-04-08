@@ -15,7 +15,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ $configmapName }}
+{{- if $envVar.Values.namespace }}
   namespace: {{ $envVar.Values.namespace }}
+{{- end }}
 data:
 {{- if kindIs "map" $configmapTpl -}}
 {{- tpl (toYaml $configmapTpl) $envVar | nindent 2 }}
@@ -27,7 +29,12 @@ data:
 {{/*
 # exampleValues:
 examples:
-  - name: basic-configmap
+  - name: basic-configmap-kvs
+    values: |
+      configmaps:
+        yas-configuration:
+          PIPELINE_WORKSPACE: yacht-tekton
+  - name: basic-configmap-file
     values: |
       configmaps:
         sthings-k8s-operator-manager-config:
