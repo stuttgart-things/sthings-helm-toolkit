@@ -41,6 +41,12 @@ spec:
                   number: {{ $ingress.service.port }}
             path: {{ $ingress.service.path }}
             pathType: {{ $ingress.service.pathType | default "ImplementationSpecific" }}
+  {{- if $ingress.tls }}
+  tls:
+  - secretName: {{ $ingress.tls.secretName }}
+    hosts:
+      - {{ $ingress.tls.host }}
+  {{- end }}
 {{- end }}
 
 {{/*
