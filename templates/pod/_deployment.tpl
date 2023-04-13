@@ -40,7 +40,8 @@ spec:
         {{- toYaml $envVar.Values.deployment.labels | nindent 8 }}
     spec:
   {{- if $envVar.Values.deployment.affinity }}
-    {{- toYaml $envVar.Values.deployment.affinity | nindent 2 }}
+      affinity:
+        {{- toYaml $envVar.Values.deployment.affinity | nindent 6 }}
   {{- end }}
   {{- if $envVar.Values.deployment.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ $envVar.Values.deployment.terminationGracePeriodSeconds }}
