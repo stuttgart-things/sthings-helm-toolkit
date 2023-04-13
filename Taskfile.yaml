@@ -23,6 +23,7 @@ tasks:
     deps: [package]
     cmds:
       - helm push {{ .PACKAGE }} oci://{{ .REGISTRY }}/{{ .REPOSITORY_NAME }}
+      - rm -rf {{ .PACKAGE }}
     vars:
       PACKAGE:
         sh: ls *tgz* -Art | tail -n 1
