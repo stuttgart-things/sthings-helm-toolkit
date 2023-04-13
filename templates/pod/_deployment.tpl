@@ -309,6 +309,22 @@ examples:
     values: |
       deployment:
         name: sthings-k8s-operator-controller-manager
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+              - matchExpressions:
+                - key: kubernetes.io/arch
+                  operator: In
+                  values:
+                  - amd64
+                  - arm64
+                  - ppc64le
+                  - s390x
+                - key: kubernetes.io/os
+                  operator: In
+                  values:
+                  - linux
         containers:
           manager:
             image: scr.labul.sva.de/sthings-k8s-operator/sthings-k8s-operator
