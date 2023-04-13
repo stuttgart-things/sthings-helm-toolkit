@@ -1,7 +1,6 @@
 ---
 version: "3"
 vars:
-  MODULE: github.com/stuttgart-things/yacht-application-server
   REGISTRY: eu.gcr.io
   REPOSITORY_NAME: stuttgart-things
   PROJECT_NAME:
@@ -15,20 +14,23 @@ tasks:
         ignore_error: true
 
   package:
-    desc: Lint code
+    desc: Package archive
     cmds:
       - helm package .
 
   push:
-    desc: Lint code
+    desc: Push to registry
+    deps: [package]
     cmds:
-      - helm package .
+      - helm push {{ .PACKAGE }} oci://{{ .REGISTRY }}/{{ .REPOSITORY_NAME }}
+    vars:
+      PACKAGE:
+        sh: ls *tgz* -Art | tail -n 1
 
   tag:
-    desc: commit, push & tag the module
-    deps: [lint]
+    desc: Commit, push & tag the module
+    deps: [lint, package]
     cmds:
-      - go mod tidy
       - git pull
       - git add *
       - git commit -am 'updated {{ .PROJECT_NAME }} {{ .DATE }} for tag version {{ .UPDATED_TAG_VERSION }}'
