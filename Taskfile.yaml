@@ -14,9 +14,16 @@ tasks:
         ignore_error: true
 
   package:
-    desc: Package archive
+    desc: Update Chart.yaml and package archive
     cmds:
+      - "sed -i 's/version: .*/version: {{ .UPDATED_TAG_VERSION }}/g' Chart.yaml"
+      - "sed -i 's/appVersion: .*/appVersion: {{ .UPDATED_TAG_VERSION }}/g' Chart.yaml"
       - helm package .
+    vars:
+      UPDATED_TAG:
+        sh: old_tag=$(git describe --tags --abbrev=0 | cut -d "." -f3); new_tag=$((old_tag+1)); echo $new_tag
+      UPDATED_TAG_VERSION:
+        sh: t1=$(git describe --tags --abbrev=0 | cut -f1 -d'.'); t2=$(git describe --tags --abbrev=0 | cut -f2 -d'.'); echo $t1.$t2.{{.UPDATED_TAG}}
 
   push:
     desc: Push to registry
