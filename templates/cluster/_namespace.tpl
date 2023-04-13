@@ -32,7 +32,7 @@ examples:
     values: |
       namespaces:
         sthings-base
-          name: sthings-base:
+          name: sthings-base
           labels:
             app: sthings-base
           #annotations:

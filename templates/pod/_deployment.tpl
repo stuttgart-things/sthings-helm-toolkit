@@ -39,6 +39,9 @@ spec:
       labels:
         {{- toYaml $envVar.Values.deployment.labels | nindent 8 }}
     spec:
+  {{- if $envVar.Values.deployment.affinity }}
+    {{- toYaml $v.probes | nindent 2 }}
+  {{- end }}
   {{- if $envVar.Values.deployment.terminationGracePeriodSeconds }}
       terminationGracePeriodSeconds: {{ $envVar.Values.deployment.terminationGracePeriodSeconds }}
   {{- end }}
