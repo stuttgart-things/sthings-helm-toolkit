@@ -190,6 +190,9 @@ spec:
           {{- range $key, $volume := $v.volumeMounts }}
             - name: {{ $key }}
               mountPath: {{ $volume.mountPath }}
+              {{- if $volume.subPath }}
+              subPath: {{ $volume.subPath }}
+              {{- end }}
           {{- end }}{{- end }}
       {{- end }}{{ else if $envVar.Values.deployment.image }}
       containers:
