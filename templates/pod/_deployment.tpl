@@ -107,6 +107,9 @@ spec:
         {{- range $k, $v := $envVar.Values.deployment.initContainer.volumeMounts }}
           - name: {{ $k }}
             mountPath: {{ $v.mountPath }}
+            {{- if $v.subPath }}
+            subPath: {{ $v.subPath }}
+            {{- end }}
         {{- end }}
         {{- end }}
   {{- end}}

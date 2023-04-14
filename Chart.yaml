@@ -3,8 +3,8 @@ apiVersion: v2
 name: sthings-helm-toolkit
 description: A Helm utility library chart for Kubernetes
 type: library
-version: 2.4.23
-appVersion: 2.4.23
+version: 2.4.24
+appVersion: 2.4.24
 
 maintainers:
   - name: Patrick Hermann
