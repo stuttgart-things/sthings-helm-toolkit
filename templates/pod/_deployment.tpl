@@ -65,7 +65,7 @@ spec:
         {{- if eq $v.volumeKind "emptyDir" }}
           emptyDir: {}{{- else if eq $v.volumeKind "configMap" }}
           configMap:
-            name:  {{ $v.volumeRef }}{{ else }}
+            name:  {{ $v.volumeKind }}{{ else }}
           {{ $v.volumeKind }}:
             {{ $v.volumeKind }}Name: {{ $v.volumeRef }}{{ end }}{{ end }}{{ end }}
   {{- if $envVar.Values.deployment.initContainer }}
