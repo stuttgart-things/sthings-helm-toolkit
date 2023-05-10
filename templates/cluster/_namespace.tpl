@@ -31,7 +31,7 @@ examples:
   - name: basic-namespace
     values: |
       namespaces:
-        sthings-base
+        sthings-base:
           name: sthings-base
           labels:
             app: sthings-base
