@@ -11,7 +11,7 @@
 {{- $taskName := index . 1 -}}
 {{- $task := index . 2 -}}
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/{{ $task.apiVersion | default "v1" }} 
 kind: Task
 metadata:
   name: {{ $taskName }}
