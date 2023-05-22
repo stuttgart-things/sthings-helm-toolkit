@@ -120,7 +120,7 @@ spec:
           image: {{ $v.image }}:{{ $v.tag }}
           imagePullPolicy: {{ $v.imagePullPolicy | default "Always" }}
           securityContext:
-            {{- if $v.securityContext.capabilities }}
+            {{- if or $v.securityContext.capabilities $v.securityContext }}
             capabilities:
               {{- toYaml $v.securityContext.capabilities | nindent 14 }}{{- end }}
             allowPrivilegeEscalation: {{ $v.securityContext.allowPrivilegeEscalation | default "true" }}
