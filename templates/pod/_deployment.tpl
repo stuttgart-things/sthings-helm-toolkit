@@ -140,25 +140,31 @@ spec:
               containerPort: {{ $port.containerPort }}
               protocol: {{ $port.protocol | default "TCP" }}
           {{- end }}{{- end }}
-          {{- if or $envVar.Values.secrets $envVar.Values.configmaps }}
+          {{- if or $envVar.Values.secrets $envVar.Values.configmaps $envVar.Values.secretsEnvFrom $envVar.Values.configmapsEnvFrom }}
           envFrom:
           {{- end }}
+          {{- if or $envVar.Values.secrets $envVar.Values.secretsEnvFrom }}
           {{- if $envVar.Values.secrets }}
           {{- range $k, $v := $envVar.Values.secrets }}
           - secretRef:
               name: {{ $v.name }}
           {{- end }}{{- end }}
+          {{- if $envVar.Values.secretsEnvFrom }}
+          {{- range $k, $v := $envVar.Values.secretsEnvFrom }}
+          - secretRef:
+              name: {{ $v.name }}
+          {{- end }}{{- end }}{{- end }}
+          {{- if or $envVar.Values.configmaps $envVar.Values.configmapsEnvFrom }}
           {{- if $envVar.Values.configmaps }}
           {{- range $k, $v := $envVar.Values.configmaps }}
           - configMapRef:
               name: {{ $k }}
           {{- end }}{{- end }}
-          {{- if $v.env }}
-          env:
-          {{- range $e, $env := $v.env }}
-            - name: {{ $e }}
-              value: {{ $env.value }}
-          {{- end }}{{- end }}
+          {{- if $envVar.Values.configmapsEnvFrom }}
+          {{- range $k, $v := $envVar.Values.configmapsEnvFrom }}
+          - configMapRef:
+              name: {{ $k }}
+          {{- end }}{{- end }}{{- end }}
           {{- if $v.probes }}
             {{- toYaml $v.probes | nindent 10 }}
           {{- end }}
