@@ -140,7 +140,7 @@ spec:
               containerPort: {{ $port.containerPort }}
               protocol: {{ $port.protocol | default "TCP" }}
           {{- end }}{{- end }}
-          {{- if or $envVar.Values.secrets $envVar.Values.configmaps $envVar.Values.secretsEnvFrom $envVar.Values.configmapsEnvFrom }}
+          {{- if or $envVar.Values.secrets $envVar.Values.configmaps $v.secretsEnvFrom $v.configmapsEnvFrom }}
           envFrom:
           {{- end }}
           {{- if or $envVar.Values.secrets $envVar.Values.secretsEnvFrom }}
@@ -149,8 +149,8 @@ spec:
           - secretRef:
               name: {{ $v.name }}
           {{- end }}{{- end }}
-          {{- if $envVar.Values.secretsEnvFrom }}
-          {{- range $k, $v := $envVar.Values.secretsEnvFrom }}
+          {{- if $v.secretsEnvFrom }}
+          {{- range $k, $v := $v.secretsEnvFrom }}
           - secretRef:
               name: {{ $v.name }}
           {{- end }}{{- end }}{{- end }}
@@ -160,8 +160,8 @@ spec:
           - configMapRef:
               name: {{ $k }}
           {{- end }}{{- end }}
-          {{- if $envVar.Values.configmapsEnvFrom }}
-          {{- range $k, $v := $envVar.Values.configmapsEnvFrom }}
+          {{- if $v.configmapsEnvFrom }}
+          {{- range $k, $v := $v.configmapsEnvFrom }}
           - configMapRef:
               name: {{ $k }}
           {{- end }}{{- end }}{{- end }}
