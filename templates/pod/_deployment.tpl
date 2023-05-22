@@ -119,6 +119,7 @@ spec:
         - name: {{ $k }}
           image: {{ $v.image }}:{{ $v.tag }}
           imagePullPolicy: {{ $v.imagePullPolicy | default "Always" }}
+          {{- if $v.securityContext }}
           securityContext:
             {{- if or $v.securityContext.capabilities $v.securityContext }}
             capabilities:
@@ -133,6 +134,7 @@ spec:
             runAsGroup: {{ $v.securityContext.runAsGroup | default "3000" }}{{- end }}
             {{- if $v.securityContext.fsGroup }}
             fsGroup: {{ $v.securityContext.fsGroup | default "2000" }}{{- end }}
+          {{- end }}
           {{- if $v.ports }}
           ports:
           {{- range $key, $port := $v.ports }}
