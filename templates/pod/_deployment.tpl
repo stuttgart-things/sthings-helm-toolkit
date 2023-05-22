@@ -140,7 +140,6 @@ spec:
               containerPort: {{ $port.containerPort }}
               protocol: {{ $port.protocol | default "TCP" }}
           {{- end }}{{- end }}
-          {{- if or $envVar.Values.secretsEnvFrom $envVar.Values.configmapsEnvFrom}}
           {{- if or $envVar.Values.secrets $envVar.Values.configmaps $envVar.Values.secretsEnvFrom $envVar.Values.configmapsEnvFrom }}
           envFrom:
           {{- end }}
