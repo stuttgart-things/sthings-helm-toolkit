@@ -140,6 +140,12 @@ spec:
               containerPort: {{ $port.containerPort }}
               protocol: {{ $port.protocol | default "TCP" }}
           {{- end }}{{- end }}
+          {{- if $v.env }}
+          env:
+          {{- range $e, $env := $v.env }}
+            - name: {{ $e }}
+              value: {{ $env.value }}
+          {{- end }}{{- end }}
           {{- if or $envVar.Values.secrets $envVar.Values.configmaps $envVar.Values.secretsEnvFrom $envVar.Values.configmapsEnvFrom }}
           envFrom:
           {{- end }}
@@ -160,12 +166,6 @@ spec:
           {{- range $k, $v := $envVar.Values.configmapsEnvFrom }}
           - configMapRef:
               name: {{ $k }}
-          {{- end }}{{- end }}
-          {{- if $v.env }}
-          env:
-          {{- range $e, $env := $v.env }}
-            - name: {{ $e }}
-              value: {{ $env.value }}
           {{- end }}{{- end }}
           {{- if $v.probes }}
             {{- toYaml $v.probes | nindent 10 }}
