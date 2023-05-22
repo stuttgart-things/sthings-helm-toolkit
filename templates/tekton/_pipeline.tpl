@@ -11,7 +11,7 @@
 {{- $pipelineName := index . 1 -}}
 {{- $pipeline := index . 2 -}}
 ---
-apiVersion: tekton.dev/v1beta1
+apiVersion: tekton.dev/{{ $pipeline.apiVersion | default "v1" }}
 kind: Pipeline
 metadata:
   name: {{ $pipelineName }}
