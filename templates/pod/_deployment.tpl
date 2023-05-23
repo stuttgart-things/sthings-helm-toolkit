@@ -143,7 +143,7 @@ spec:
           {{- if or $envVar.Values.secrets $envVar.Values.configmaps $v.secretsEnvFrom $v.configmapsEnvFrom }}
           envFrom:
           {{- end }}
-          {{- if or $envVar.Values.secrets $envVar.Values.secretsEnvFrom }}
+          {{- if or $envVar.Values.secrets $v.secretsEnvFrom }}
           {{- if $envVar.Values.secrets }}
           {{- range $k, $v := $envVar.Values.secrets }}
           - secretRef:
@@ -154,7 +154,7 @@ spec:
           - secretRef:
               name: {{ $v.name }}
           {{- end }}{{- end }}{{- end }}
-          {{- if or $envVar.Values.configmaps $envVar.Values.configmapsEnvFrom }}
+          {{- if or $envVar.Values.configmaps $v.configmapsEnvFrom }}
           {{- if $envVar.Values.configmaps }}
           {{- range $k, $v := $envVar.Values.configmaps }}
           - configMapRef:
