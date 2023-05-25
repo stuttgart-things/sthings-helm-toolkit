@@ -5,11 +5,12 @@
 {{ include "sthings-helm-toolkit.role" (list $envVar $roleName $role) }}
 {{ end -}}
 */}}
----
+
 {{- define "sthings-helm-toolkit.role" -}}
 {{- $envVar := first . -}}
 {{- $roleName := index . 1 -}}
 {{- $role := index . 2 -}}
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:

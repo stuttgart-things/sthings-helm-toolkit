@@ -5,11 +5,12 @@
 {{ include "sthings-helm-toolkit.role-binding" (list $envVar $roleBindingName $roleBinding) }}
 {{ end -}}
 */}}
----
+
 {{- define "sthings-helm-toolkit.role-binding" -}}
 {{- $envVar := first . -}}
 {{- $roleBindingName := index . 1 -}}
 {{- $roleBinding := index . 2 -}}
+---
 kind: RoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
