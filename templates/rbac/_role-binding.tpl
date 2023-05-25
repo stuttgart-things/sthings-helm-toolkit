@@ -5,7 +5,7 @@
 {{ include "sthings-helm-toolkit.role-binding" (list $envVar $roleBindingName $roleBinding) }}
 {{ end -}}
 */}}
-
+---
 {{- define "sthings-helm-toolkit.role-binding" -}}
 {{- $envVar := first . -}}
 {{- $roleBindingName := index . 1 -}}
